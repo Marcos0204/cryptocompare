@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 
@@ -24,16 +24,43 @@ const InputSubmit = styled.input`
     }
 `
 
+const moneda= [
+    { id: "USD", name:'Dolar de estados unidos'},
+    { id: "MXN", name:'Peso mexicano'},
+    { id: "UER", name:'Euro'},
+    { id: "GBP", name:'Libre esterlina'},
+]
 const Form = () => {
 
-    const moneda= [
-        { id: "USD", name:'Dolar de estados unidos'},
-        { id: "MXN", name:'Peso mexicano'},
-        { id: "UER", name:'Euro'},
-        { id: "GBP", name:'Libre esterlina'},
-    ]
+    const [ coins, setCoins] = useState([])
+    
     const [ state, SelectMonedas ] = useSelectMonedas('Elige tu moneda', moneda)
-    console.log(state)
+
+    
+
+    useEffect(() =>{
+        const getApi = async () =>{
+            const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD';
+            const res = await fetch(url).then(state => {
+                const Data = state.json()
+                return Data
+            }) 
+            //const resJson = await response.json()
+            const array = res.Data.map( cripto => {
+                const { CoinInfo : { Name, FullName } } = cripto;
+                return {
+                    id: Name,
+                    name: FullName
+                }
+            });
+
+            setCoins([...array])
+
+        }
+        getApi();
+    },[])
+
+    console.log(coins)
     
     return (
         <form>
