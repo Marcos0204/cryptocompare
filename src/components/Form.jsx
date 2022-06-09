@@ -35,6 +35,7 @@ const Form = () => {
     const [ coins, setCoins] = useState([])
     
     const [ state, SelectMonedas ] = useSelectMonedas('Elige tu moneda', moneda)
+    const [ stateCoinst, SelectMonedasCriptos ] = useSelectMonedas('Elige tu Criptomoneda', coins)
 
     
 
