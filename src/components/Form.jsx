@@ -17,6 +17,7 @@ const InputSubmit = styled.input`
     font-size: 24px;
     border-radius: 15px;
     transition: all .3s  ease;
+    margin-top: 30px;
     cursor: pointer;
     &:hover{
         background-color:#7A7DFE;
@@ -24,8 +25,15 @@ const InputSubmit = styled.input`
 `
 
 const Form = () => {
-    const [ SelectMonedas ] = useSelectMonedas('Elige tu moneda')
 
+    const moneda= [
+        { id: "USD", name:'Dolar de estados unidos'},
+        { id: "MXN", name:'Peso mexicano'},
+        { id: "UER", name:'Euro'},
+        { id: "GBP", name:'Libre esterlina'},
+    ]
+    const [ state, SelectMonedas ] = useSelectMonedas('Elige tu moneda', moneda)
+    console.log(state)
     
     return (
         <form>
