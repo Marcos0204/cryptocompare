@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ImageCripto from './img/imagen-criptos.png'
 import Form from './components/Form'
@@ -44,7 +44,21 @@ const Img = styled.img`
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [monedas, setMonedas] = useState({})
+
+  useEffect(() =>{
+    if( Object.keys(monedas).length > 0 ) {
+      const cotizarCripto = async () =>{
+        const { criptos, moneda } = monedas
+        const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptos}&tsyms=${moneda}`
+        const response = await fetch(url).then(state => state.json()).catch( error => console.log(error))
+        console.log(response)
+      }
+      cotizarCripto()
+      
+    }
+  }, [ monedas ])
+
 
   return (
     <Container>
@@ -54,7 +68,9 @@ function App() {
         />
         <div>
           <Heading>Cotiza criptomonedas al instante</Heading>
-          <Form />
+          <Form 
+            setMonedas={setMonedas}
+          />
         </div>
     </Container>
       

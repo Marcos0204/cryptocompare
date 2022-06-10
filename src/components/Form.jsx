@@ -31,7 +31,7 @@ const monedas= [
     { id: "UER", name:'Euro'},
     { id: "GBP", name:'Libre esterlina'},
 ]
-const Form = () => {
+const Form = ({setMonedas}) => {
 
     const [ coins, setCoins] = useState([])
     const [ error, setError] = useState(false)
@@ -67,12 +67,15 @@ const Form = () => {
         e.preventDefault();
         if([ moneda, criptos ].includes('') ) {
 
-            console.log('ERROR');
             setError(true)
             return;
         }
-        console.log('todo bien')
+       
         setError(false)
+        setMonedas({
+            moneda,
+            criptos
+        })
     }
     
     return (
