@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 
 import useSelectMonedas from '../hooks/useSelectMonedas'
+import Error from './Error'
 
 
 
@@ -24,7 +25,7 @@ const InputSubmit = styled.input`
     }
 `
 
-const moneda= [
+const monedas= [
     { id: "USD", name:'Dolar de estados unidos'},
     { id: "MXN", name:'Peso mexicano'},
     { id: "UER", name:'Euro'},
@@ -33,9 +34,10 @@ const moneda= [
 const Form = () => {
 
     const [ coins, setCoins] = useState([])
+    const [ error, setError] = useState(false)
     
-    const [ state, SelectMonedas ] = useSelectMonedas('Elige tu moneda', moneda)
-    const [ stateCoinst, SelectMonedasCriptos ] = useSelectMonedas('Elige tu Criptomoneda', coins)
+    const [ moneda, SelectMonedas ] = useSelectMonedas('Elige tu moneda', monedas)
+    const [ criptos, SelectMonedasCriptos ] = useSelectMonedas('Elige tu Criptomoneda', coins)
 
     
 
@@ -61,18 +63,34 @@ const Form = () => {
         getApi();
     },[])
 
-    console.log(coins)
+    const handleSubmit = e =>{
+        e.preventDefault();
+        if([ moneda, criptos ].includes('') ) {
+
+            console.log('ERROR');
+            setError(true)
+            return;
+        }
+        console.log('todo bien')
+        setError(false)
+    }
     
     return (
-        <form>
+        <>
+            {error && <Error>Todos los campos son obligatorios</Error> }
+            <form
+                onSubmit={handleSubmit}
+            >
 
-            <SelectMonedas />
+                <SelectMonedas />
+                <SelectMonedasCriptos />
 
-            <InputSubmit
-                type='submit'
-                value='Cotizar'
-            />
-        </form>
+                <InputSubmit
+                    type='submit'
+                    value='Cotizar'
+                />
+            </form>
+        </>
     )
 }
 
