@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import ImageCripto from './img/imagen-criptos.png'
 import Form from './components/Form'
+import Info from './components/Info'
 
 
 const Container = styled.div`
@@ -45,6 +46,7 @@ const Img = styled.img`
 
 function App() {
   const [monedas, setMonedas] = useState({})
+  const [resultado, setResultado] = useState({})
 
   useEffect(() =>{
     if( Object.keys(monedas).length > 0 ) {
@@ -52,7 +54,7 @@ function App() {
         const { criptos, moneda } = monedas
         const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptos}&tsyms=${moneda}`
         const response = await fetch(url).then(state => state.json()).catch( error => console.log(error))
-        console.log(response)
+        setResultado(response.DISPLAY[criptos][moneda] )
       }
       cotizarCripto()
       
@@ -71,6 +73,7 @@ function App() {
           <Form 
             setMonedas={setMonedas}
           />
+          {Object.keys(resultado).length > 0 && <Info info={resultado} />  }
         </div>
     </Container>
       
